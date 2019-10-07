@@ -1,0 +1,29 @@
+html {
+  --black: #282c34;
+  --red: #e06c75;
+  --green: #98c379;
+  --yellow: #e5c07b;
+  --blue: #61afef;
+  --magenta: #c678dd;
+  --cyan: #56b6c2;
+  --white: #dcdfe4;
+
+  background-color: var(--black);
+  color: var(--white);
+  font: menu;
+  font-size: 48px;
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+a {
+  color: var(--yellow);
+}

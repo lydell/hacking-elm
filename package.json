@@ -1,7 +1,7 @@
 {
   "private": true,
   "scripts": {
-    "start": "elm-live src/Main.elm --start-page=index.html --pushstate -- --output=elm.js --debug",
+    "start": "elm-live src/Main.elm --start-page=index.html --pushstate -- --output=elm.js",
     "eslint": "eslint . --fix",
     "prettier": "prettier --write \"**/*.{js,css,html,md}\""
   },

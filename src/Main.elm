@@ -3,6 +3,8 @@ module Main exposing (main)
 import Browser
 import Browser.Navigation
 import Html
+import Html.Attributes as Attr
+import Slide1
 import Url exposing (Url)
 import Url.Builder
 import Url.Parser
@@ -84,10 +86,19 @@ view model =
     , body =
         case model.page of
             SlidePage num ->
-                [ Html.text ("Slide: " ++ String.fromInt num) ]
+                case num of
+                    1 ->
+                        Slide1.view
+
+                    _ ->
+                        [ Html.h1 [] [ Html.text ("Unknown slide: " ++ String.fromInt num) ]
+                        , Html.p [] [ Html.a [ Attr.href "/" ] [ Html.text "Home" ] ]
+                        ]
 
             NotFound ->
-                [ Html.text "Not found!" ]
+                [ Html.h1 [] [ Html.text "Not found!" ]
+                , Html.p [] [ Html.a [ Attr.href "/" ] [ Html.text "Home" ] ]
+                ]
 
             Empty ->
                 []
