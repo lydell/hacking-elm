@@ -94,18 +94,25 @@ view model =
     }
 
 
+urlParser : Url.Parser.Parser (Page -> b) b
+urlParser =
+    Url.Parser.oneOf
+        [ Url.Parser.map Empty Url.Parser.top
+        , Url.Parser.map SlidePage Url.Parser.int
+        ]
+
+
 pageFromUrl : Browser.Navigation.Key -> Url -> ( Page, Cmd msg )
 pageFromUrl key url =
-    if url.path == "/" then
-        ( Empty, Browser.Navigation.replaceUrl key (slideUrl 1) )
+    case Url.Parser.parse urlParser url of
+        Just Empty ->
+            ( Empty, Browser.Navigation.replaceUrl key (slideUrl 1) )
 
-    else
-        case Url.Parser.parse Url.Parser.int url of
-            Just num ->
-                ( SlidePage num, Cmd.none )
+        Just page ->
+            ( page, Cmd.none )
 
-            Nothing ->
-                ( NotFound, Cmd.none )
+        Nothing ->
+            ( NotFound, Cmd.none )
 
 
 slideUrl : Int -> String
