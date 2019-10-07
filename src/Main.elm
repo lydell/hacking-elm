@@ -1,13 +1,23 @@
 module Main exposing (main)
 
+import Array exposing (Array)
 import Browser
+import Browser.Events
 import Browser.Navigation
-import Html
+import Html exposing (Html)
 import Html.Attributes as Attr
+import Json.Decode
 import Slide1
 import Url exposing (Url)
 import Url.Builder
 import Url.Parser
+
+
+slides : Array (List (Html msg))
+slides =
+    Array.fromList
+        [ Slide1.view
+        ]
 
 
 main : Program () Model Msg
@@ -31,6 +41,7 @@ type alias Model =
 type Msg
     = UrlChanged Url
     | LinkClicked Browser.UrlRequest
+    | KeyPressed KeyPress
 
 
 type Page
@@ -74,10 +85,36 @@ update msg model =
                     , Browser.Navigation.load url
                     )
 
+        KeyPressed key ->
+            case model.page of
+                SlidePage num ->
+                    let
+                        delta =
+                            case key of
+                                ArrowLeft ->
+                                    -1
+
+                                ArrowRight ->
+                                    1
+
+                        newNum =
+                            clamp 1 (Array.length slides) (num + delta)
+                    in
+                    if newNum /= num then
+                        ( model
+                        , Browser.Navigation.pushUrl model.key (slideUrl newNum)
+                        )
+
+                    else
+                        ( model, Cmd.none )
+
+                _ ->
+                    ( model, Cmd.none )
+
 
 subscriptions : Model -> Sub Msg
 subscriptions _ =
-    Sub.none
+    Browser.Events.onKeyDown keydownDecoder
 
 
 view : Model -> Browser.Document Msg
@@ -86,11 +123,11 @@ view model =
     , body =
         case model.page of
             SlidePage num ->
-                case num of
-                    1 ->
-                        Slide1.view
+                case Array.get (num - 1) slides of
+                    Just content ->
+                        content
 
-                    _ ->
+                    Nothing ->
                         [ Html.h1 [] [ Html.text ("Unknown slide: " ++ String.fromInt num) ]
                         , Html.p [] [ Html.a [ Attr.href "/" ] [ Html.text "Home" ] ]
                         ]
@@ -129,3 +166,26 @@ pageFromUrl key url =
 slideUrl : Int -> String
 slideUrl num =
     Url.Builder.absolute [ String.fromInt num ] []
+
+
+type KeyPress
+    = ArrowLeft
+    | ArrowRight
+
+
+keydownDecoder : Json.Decode.Decoder Msg
+keydownDecoder =
+    Json.Decode.field "key" Json.Decode.string
+        |> Json.Decode.andThen
+            (\key ->
+                case key of
+                    "ArrowLeft" ->
+                        Json.Decode.succeed ArrowLeft
+
+                    "ArrowRight" ->
+                        Json.Decode.succeed ArrowRight
+
+                    _ ->
+                        Json.Decode.fail "ignored"
+            )
+        |> Json.Decode.map KeyPressed
