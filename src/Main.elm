@@ -4,6 +4,8 @@ import Browser
 import Browser.Navigation
 import Html
 import Url exposing (Url)
+import Url.Builder
+import Url.Parser
 
 
 main : Program () Model Msg
@@ -19,7 +21,7 @@ main =
 
 
 type alias Model =
-    { url : Url
+    { page : Page
     , key : Browser.Navigation.Key
     }
 
@@ -29,12 +31,22 @@ type Msg
     | LinkClicked Browser.UrlRequest
 
 
+type Page
+    = SlidePage Int
+    | NotFound
+    | Empty
+
+
 init : flags -> Url -> Browser.Navigation.Key -> ( Model, Cmd msg )
 init _ url key =
-    ( { url = url
+    let
+        ( page, pageCmd ) =
+            pageFromUrl key url
+    in
+    ( { page = page
       , key = key
       }
-    , Cmd.none
+    , pageCmd
     )
 
 
@@ -42,7 +54,11 @@ update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
         UrlChanged url ->
-            ( { model | url = url }, Cmd.none )
+            let
+                ( page, pageCmd ) =
+                    pageFromUrl model.key url
+            in
+            ( { model | page = page }, pageCmd )
 
         LinkClicked urlRequest ->
             case urlRequest of
@@ -63,7 +79,35 @@ subscriptions _ =
 
 
 view : Model -> Browser.Document Msg
-view _ =
+view model =
     { title = "Hacking Elm"
-    , body = [ Html.text "Hack hack!" ]
+    , body =
+        case model.page of
+            SlidePage num ->
+                [ Html.text ("Slide: " ++ String.fromInt num) ]
+
+            NotFound ->
+                [ Html.text "Not found!" ]
+
+            Empty ->
+                []
     }
+
+
+pageFromUrl : Browser.Navigation.Key -> Url -> ( Page, Cmd msg )
+pageFromUrl key url =
+    if url.path == "/" then
+        ( Empty, Browser.Navigation.replaceUrl key (slideUrl 1) )
+
+    else
+        case Url.Parser.parse Url.Parser.int url of
+            Just num ->
+                ( SlidePage num, Cmd.none )
+
+            Nothing ->
+                ( NotFound, Cmd.none )
+
+
+slideUrl : Int -> String
+slideUrl num =
+    Url.Builder.absolute [ String.fromInt num ] []
