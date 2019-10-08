@@ -1,4 +1,4 @@
-module Slide1 exposing (view)
+module IntroSlide exposing (view)
 
 import Html exposing (Html)
 

@@ -6,8 +6,8 @@ import Browser.Events
 import Browser.Navigation
 import Html exposing (Html)
 import Html.Attributes as Attr
+import IntroSlide
 import Json.Decode
-import Slide1
 import Url exposing (Url)
 import Url.Builder
 import Url.Parser
@@ -16,7 +16,7 @@ import Url.Parser
 slides : Array (List (Html msg))
 slides =
     Array.fromList
-        [ Slide1.view
+        [ IntroSlide.view
         ]
 
 
