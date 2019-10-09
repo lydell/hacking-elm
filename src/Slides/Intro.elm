@@ -5,6 +5,8 @@ import Html exposing (Html)
 
 view : List (Html msg)
 view =
-    [ Html.h1 [] [ Html.text "Hacking Elm" ]
-    , Html.p [] [ Html.text "Simon Lydell" ]
+    [ Html.div []
+        [ Html.h1 [] [ Html.text "Hacking Elm" ]
+        , Html.p [] [ Html.text "Simon Lydell" ]
+        ]
     ]

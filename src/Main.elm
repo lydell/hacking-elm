@@ -7,6 +7,7 @@ import Browser.Navigation
 import Html exposing (Html)
 import Html.Attributes as Attr
 import Json.Decode
+import Slides.Discourse
 import Slides.Intro
 import Url exposing (Url)
 import Url.Builder
@@ -17,7 +18,13 @@ slides : Array (List (Html msg))
 slides =
     Array.fromList
         [ Slides.Intro.view
+        , Slides.Discourse.view
         ]
+
+
+getSlide : Int -> Maybe (List (Html msg))
+getSlide num =
+    Array.get (num - 1) slides
 
 
 main : Program () Model Msg
@@ -34,6 +41,7 @@ main =
 
 type alias Model =
     { page : Page
+    , item : Int
     , key : Browser.Navigation.Key
     }
 
@@ -57,6 +65,7 @@ init _ url key =
             pageFromUrl key url
     in
     ( { page = page
+      , item = 1
       , key = key
       }
     , pageCmd
@@ -71,7 +80,7 @@ update msg model =
                 ( page, pageCmd ) =
                     pageFromUrl model.key url
             in
-            ( { model | page = page }, pageCmd )
+            ( { model | page = page, item = 1 }, pageCmd )
 
         LinkClicked urlRequest ->
             case urlRequest of
@@ -89,24 +98,48 @@ update msg model =
             case model.page of
                 SlidePage num ->
                     let
-                        delta =
+                        direction =
                             case key of
                                 ArrowLeft ->
-                                    -1
+                                    Horizontal -1
 
                                 ArrowRight ->
-                                    1
+                                    Horizontal 1
 
-                        newNum =
-                            clamp 1 (Array.length slides) (num + delta)
+                                ArrowUp ->
+                                    Vertical -1
+
+                                ArrowDown ->
+                                    Vertical 1
                     in
-                    if newNum /= num then
-                        ( model
-                        , Browser.Navigation.pushUrl model.key (slideUrl newNum)
-                        )
+                    case direction of
+                        Horizontal delta ->
+                            let
+                                newNum =
+                                    clamp 1 (Array.length slides) (num + delta)
+                            in
+                            if newNum /= num then
+                                ( model
+                                , Browser.Navigation.pushUrl model.key (slideUrl newNum)
+                                )
 
-                    else
-                        ( model, Cmd.none )
+                            else
+                                ( model, Cmd.none )
+
+                        Vertical delta ->
+                            let
+                                maxItem =
+                                    case getSlide num of
+                                        Just items ->
+                                            List.length items
+
+                                        Nothing ->
+                                            1
+
+                                newItem =
+                                    clamp 1 maxItem (model.item + delta)
+                            in
+                            ( { model | item = newItem }, Cmd.none )
 
                 _ ->
                     ( model, Cmd.none )
@@ -119,26 +152,29 @@ subscriptions _ =
 
 view : Model -> Browser.Document Msg
 view model =
+    let
+        content =
+            case model.page of
+                SlidePage num ->
+                    case getSlide num of
+                        Just items ->
+                            List.take model.item items
+
+                        Nothing ->
+                            [ Html.h1 [] [ Html.text ("Unknown slide: " ++ String.fromInt num) ]
+                            , Html.p [] [ Html.a [ Attr.href "/" ] [ Html.text "Home" ] ]
+                            ]
+
+                NotFound ->
+                    [ Html.h1 [] [ Html.text "Not found!" ]
+                    , Html.p [] [ Html.a [ Attr.href "/" ] [ Html.text "Home" ] ]
+                    ]
+
+                Empty ->
+                    []
+    in
     { title = "Hacking Elm"
-    , body =
-        case model.page of
-            SlidePage num ->
-                case Array.get (num - 1) slides of
-                    Just content ->
-                        content
-
-                    Nothing ->
-                        [ Html.h1 [] [ Html.text ("Unknown slide: " ++ String.fromInt num) ]
-                        , Html.p [] [ Html.a [ Attr.href "/" ] [ Html.text "Home" ] ]
-                        ]
-
-            NotFound ->
-                [ Html.h1 [] [ Html.text "Not found!" ]
-                , Html.p [] [ Html.a [ Attr.href "/" ] [ Html.text "Home" ] ]
-                ]
-
-            Empty ->
-                []
+    , body = [ Html.div [ Attr.class "main" ] content ]
     }
 
 
@@ -168,9 +204,16 @@ slideUrl num =
     Url.Builder.absolute [ String.fromInt num ] []
 
 
+type Direction
+    = Horizontal Int
+    | Vertical Int
+
+
 type KeyPress
     = ArrowLeft
     | ArrowRight
+    | ArrowUp
+    | ArrowDown
 
 
 keydownDecoder : Json.Decode.Decoder Msg
@@ -184,6 +227,12 @@ keydownDecoder =
 
                     "ArrowRight" ->
                         Json.Decode.succeed ArrowRight
+
+                    "ArrowUp" ->
+                        Json.Decode.succeed ArrowUp
+
+                    "ArrowDown" ->
+                        Json.Decode.succeed ArrowDown
 
                     _ ->
                         Json.Decode.fail "ignored"
