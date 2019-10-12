@@ -14,6 +14,7 @@ import Slides.Normalize
 import Slides.NormalizeNaive
 import Slides.NormalizeNaiveIssues
 import Slides.Response
+import Slides.Sort
 import Slides.UpperCase
 import Slides.UpperCaseExplained
 import Url exposing (Url)
@@ -33,6 +34,7 @@ slides =
         , Slides.NormalizeNaive.view
         , Slides.NormalizeNaiveIssues.view
         , Slides.Normalize.view
+        , Slides.Sort.view
         ]
 
 
