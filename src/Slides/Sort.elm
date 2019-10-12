@@ -2,7 +2,6 @@ module Slides.Sort exposing (view)
 
 import Html exposing (Html)
 import Html.Attributes as Attr
-import LocaleCompare
 
 
 list =

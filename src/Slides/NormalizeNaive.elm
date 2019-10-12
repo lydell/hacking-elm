@@ -46,6 +46,38 @@ view =
 -- import StringDebug exposing (debug)
 -- [ Html.p [] [ Html.text <| debug "Å" ]
 --
+--
+--
+--
+--
+--
+--
+--
+--
+--
+--
+--
+--
+--
+--
+--
+--
+--
+--
+--
+--
+--
+--
+--
+--
+--
+--
+--
+--
+--
+--
+--
+--
 -- [ Html.p [] [ Html.text <| debug <| normalize "Å" ]
 -- normalize : String -> String
 -- normalize string =
