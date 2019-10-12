@@ -44,3 +44,5 @@ view =
 --
 --
 -- [ Html.p [] [ Html.text (String.toUpper "AbCd") ]
+--
+-- String.prototype.toUpperCase = String.prototype.toLowerCase;

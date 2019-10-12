@@ -10,8 +10,12 @@ import Json.Decode
 import Slides.Discourse
 import Slides.HowToHack
 import Slides.Intro
+import Slides.Normalize
+import Slides.NormalizeNaive
+import Slides.NormalizeNaiveIssues
 import Slides.Response
 import Slides.UpperCase
+import Slides.UpperCaseExplained
 import Url exposing (Url)
 import Url.Builder
 import Url.Parser
@@ -25,6 +29,10 @@ slides =
         , Slides.Response.view
         , Slides.HowToHack.view
         , Slides.UpperCase.view
+        , Slides.UpperCaseExplained.view
+        , Slides.NormalizeNaive.view
+        , Slides.NormalizeNaiveIssues.view
+        , Slides.Normalize.view
         ]
 
 
