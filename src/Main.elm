@@ -8,7 +8,10 @@ import Html exposing (Html)
 import Html.Attributes as Attr
 import Json.Decode
 import Slides.Discourse
+import Slides.HowToHack
 import Slides.Intro
+import Slides.Response
+import Slides.UpperCase
 import Url exposing (Url)
 import Url.Builder
 import Url.Parser
@@ -19,6 +22,9 @@ slides =
     Array.fromList
         [ Slides.Intro.view
         , Slides.Discourse.view
+        , Slides.Response.view
+        , Slides.HowToHack.view
+        , Slides.UpperCase.view
         ]
 
 

@@ -27,8 +27,14 @@ body {
 .main {
   margin: auto;
   text-align: center;
+  padding: 32px;
 }
 
 a {
   color: var(--yellow);
+}
+
+img {
+  max-width: 100%;
+  object-fit: contain;
 }
