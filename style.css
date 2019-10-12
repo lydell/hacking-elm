@@ -38,3 +38,50 @@ img {
   max-width: 100%;
   object-fit: contain;
 }
+
+.controls {
+  --size: 100px;
+  --offset: 8px;
+  width: var(--size);
+  height: var(--size);
+  position: fixed;
+  z-index: 999;
+  right: var(--offset);
+  bottom: var(--offset);
+}
+
+.controls > * {
+  position: absolute;
+  opacity: 0.5;
+  border: 16px solid transparent;
+  border-bottom: 28px solid currentColor;
+  border-top: none;
+}
+
+.controls > .enabled {
+  opacity: 1;
+}
+
+.controls > *:nth-child(1) {
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%) rotate(0deg);
+}
+
+.controls > *:nth-child(2) {
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%) rotate(180deg);
+}
+
+.controls > *:nth-child(3) {
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%) rotate(-90deg);
+}
+
+.controls > *:nth-child(4) {
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%) rotate(90deg);
+}

@@ -178,7 +178,14 @@ view model =
                 SlidePage num ->
                     case getSlide num of
                         Just items ->
-                            List.take model.item items
+                            [ Html.div [] (List.take model.item items)
+                            , viewControls
+                                { slide = num
+                                , maxSlide = Array.length slides
+                                , item = model.item
+                                , maxItem = List.length items
+                                }
+                            ]
 
                         Nothing ->
                             [ Html.h1 [] [ Html.text ("Unknown slide: " ++ String.fromInt num) ]
@@ -196,6 +203,29 @@ view model =
     { title = "Hacking Elm"
     , body = [ Html.div [ Attr.class "main" ] content ]
     }
+
+
+type alias ViewControlsOptions =
+    { slide : Int
+    , maxSlide : Int
+    , item : Int
+    , maxItem : Int
+    }
+
+
+viewControls : ViewControlsOptions -> Html msg
+viewControls { slide, maxSlide, item, maxItem } =
+    Html.div [ Attr.class "controls" ]
+        [ viewControl (item > 1)
+        , viewControl (item < maxItem)
+        , viewControl (slide > 1)
+        , viewControl (slide < maxSlide)
+        ]
+
+
+viewControl : Bool -> Html msg
+viewControl enabled =
+    Html.div [ Attr.classList [ ( "enabled", enabled ) ] ] []
 
 
 urlParser : Url.Parser.Parser (Page -> b) b
