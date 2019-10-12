@@ -7,6 +7,7 @@ import Browser.Navigation
 import Html exposing (Html)
 import Html.Attributes as Attr
 import Json.Decode
+import Slides.Conclusions
 import Slides.Discourse
 import Slides.HowToHack
 import Slides.Intro
@@ -15,6 +16,7 @@ import Slides.NormalizeNaive
 import Slides.NormalizeNaiveIssues
 import Slides.Response
 import Slides.Sort
+import Slides.Thanks
 import Slides.UpperCase
 import Slides.UpperCaseExplained
 import Url exposing (Url)
@@ -35,6 +37,8 @@ slides =
         , Slides.NormalizeNaiveIssues.view
         , Slides.Normalize.view
         , Slides.Sort.view
+        , Slides.Conclusions.view
+        , Slides.Thanks.view
         ]
 
 
