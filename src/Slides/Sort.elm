@@ -87,7 +87,7 @@ view =
 --
 --
 -- list =
---     List.sort [ "b", "a", "ö", "c", "ä", "å", "file1.jpg", "file2.jpg", "file10.jpg" ]
+--     List.sort [ "b", "a", "ö", "c", "ä", "å", "file1.png", "file2.png", "file10.png" ]
 --
 --
 --
@@ -121,7 +121,7 @@ view =
 --
 --
 -- list =
---     List.sortWith LocaleCompare.compare [ "b", "a", "ö", "c", "ä", "å", "file1.jpg", "file2.jpg", "file10.jpg" ]
+--     List.sortWith LocaleCompare.compare [ "b", "a", "ö", "c", "ä", "å", "file1.png", "file2.png", "file10.png" ]
 --
 -- import LocaleCompare
 --
@@ -160,6 +160,43 @@ view =
 -- list =
 --     List.sortWith
 --         (LocaleCompare.compare "sv" LocaleCompare.defaultOptions)
+--         [ "b", "a", "ö", "c", "ä", "å", "file1.png", "file2.png", "file10.png" ]
+--
+--
+--
+--
+--
+--
+--
+--
+--
+--
+--
+--
+--
+--
+--
+--
+--
+--
+--
+--
+--
+--
+--
+--
+--
+--
+--
+--
+--
+--
+--
+--
+--
+-- list =
+--     List.sortWith
+--         (LocaleCompare.compare "sv" { defaultOptions | numeric = True })
 --         [ "b", "a", "ö", "c", "ä", "å", "file1.jpg", "file2.jpg", "file10.jpg" ]
 --
 --
@@ -196,46 +233,5 @@ view =
 --
 -- list =
 --     List.sortWith
---         (LocaleCompare.compare "sv"
---             (\defaultOptions -> { defaultOptions | numeric = True })
---         )
---         [ "b", "a", "ö", "c", "ä", "å", "file1.jpg", "file2.jpg", "file10.jpg" ]
---
---
---
---
---
---
---
---
---
---
---
---
---
---
---
---
---
---
---
---
---
---
---
---
---
---
---
---
---
---
---
---
---
--- list =
---     List.sortWith
---         (LocaleCompare.compare "oops"
---             (\defaultOptions -> { defaultOptions | numeric = True })
---         )
+--         (LocaleCompare.compare "oops" { defaultOptions | numeric = True })
 --         [ "b", "a", "ö", "c", "ä", "å", "file1.jpg", "file2.jpg", "file10.jpg" ]

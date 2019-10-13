@@ -12,10 +12,44 @@ view =
 
 normalize : String -> String
 normalize string =
-    string
+    String.toUpper string
 
 
 
+--
+--
+--
+--
+--
+--
+--
+--
+--
+--
+--
+--
+--
+--
+--
+--
+--
+--
+--
+--
+--
+--
+--
+--
+--
+--
+--
+--
+--
+--
+--
+--
+--
+-- 999999999999999
 --
 --
 --

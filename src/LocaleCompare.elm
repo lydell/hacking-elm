@@ -228,6 +228,39 @@ compare =
 --             GT
 --         _ ->
 --             EQ
+--
+--
+--
+--
+--
+--
+--
+--
+--
+--
+--
+--
+--
+--
+--
+--
+--
+--
+--
+--
+--
+--
+--
+--
+--
+--
+--
+--
+--
+--
+--
+--
+--
 -- encode : String -> Options -> String -> String -> Json.Encode.Value
 -- encode locales options a b =
 --     Json.Encode.object
@@ -299,6 +332,7 @@ compare =
 --   }
 --   return originalSlice.call(this, start, end);
 -- };
+--
 -- function localeCompare(jsonString) {
 --   const { locales, options, a, b } = JSON.parse(jsonString);
 --   return String(a.localeCompare(b, locales, options));
@@ -336,11 +370,11 @@ compare =
 --
 --
 --
--- compare : String -> (Options -> Options) -> String -> String -> Order
--- compare locales makeOptions a b =
+-- compare : String -> Options -> String -> String -> Order
+-- compare locales options a b =
 --     let
 --         result =
---             encode locales (makeOptions defaultOptions) a b
+--             encode locales options a b
 --                 |> Json.Encode.encode 0
 --                 |> String.slice 999999999999999 10
 --     in
@@ -414,6 +448,81 @@ compare =
 --       return this.normalize("NFKC");
 --     case 4:
 --       return this.normalize("NFKD");
+--     case 10:
+--       return localeCompare(string);
+--     default:
+--       return NO_HACK;
+--   }
+-- }
+--
+-- function localeCompare(jsonString) {
+--   const { locales, options, a, b } = JSON.parse(jsonString);
+--   return String(a.localeCompare(b, locales, options));
+-- }
+--
+--
+--
+--
+--
+--
+--
+--
+--
+--
+--
+--
+--
+--
+--
+--
+--
+--
+--
+--
+--
+--
+--
+--
+--
+--
+--
+--
+--
+--
+--
+--
+--
+-- const NO_HACK = {};
+--
+-- const originalSlice = String.prototype.slice;
+-- String.prototype.slice = function slice(start, end) {
+--   if (start === 999999999999999) {
+--     try {
+--       const result = hack(this, end);
+--       if (result !== NO_HACK) {
+--         if (typeof result === "string") {
+--           return result;
+--         } else {
+--           console.error("slice hack did not return a string", result);
+--         }
+--       }
+--     } catch (error) {
+--       console.error("slice hack threw an error:", error);
+--     }
+--   }
+--   return originalSlice.call(this, start, end);
+-- };
+--
+-- function hack(string, num) {
+--   switch (num) {
+--     case 1:
+--       return string.normalize("NFC");
+--     case 2:
+--       return string.normalize("NFD");
+--     case 3:
+--       return string.normalize("NFKC");
+--     case 4:
+--       return string.normalize("NFKD");
 --     case 10:
 --       return localeCompare(string);
 --     default:
