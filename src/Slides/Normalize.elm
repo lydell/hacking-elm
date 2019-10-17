@@ -84,6 +84,51 @@ normalize string =
 --
 -- "a".repeat(999999999999999).length
 --
+-- > String.repeat 5 "a"
+-- "aaaaa" : String
+-- > String.repeat 5 "a" |> String.length
+-- 5 : Int
+-- > String.repeat 999999999999999 "a" |> String.length
+-- 1 : Int
+-- > String.repeat 99999999999999 "a" |> String.length
+-- 276447231 : Int
+-- > String.repeat 9999999999999 "a" |> String.length
+-- RangeError: Invalid string length>
+-- > String.repeat 99999999 "a" |> String.length
+-- 99999999 : Int
+--
+--
+--
+--
+--
+--
+--
+--
+--
+--
+--
+--
+--
+--
+--
+--
+--
+--
+--
+--
+--
+--
+--
+--
+--
+--
+--
+--
+--
+--
+--
+--
+--
 -- normalize : String -> String
 -- normalize string =
 --     String.slice 999999999999999 0 string
