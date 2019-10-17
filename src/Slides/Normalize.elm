@@ -82,6 +82,7 @@ normalize string =
 --
 --
 --
+-- "a".repeat(999999999999999).length
 --
 -- normalize : String -> String
 -- normalize string =
@@ -147,6 +148,7 @@ normalize string =
 -- normalize form string =
 --     String.slice 999999999999999 (formToInt form) string
 -- [ Html.p [] [ Html.text <| debug <| normalize NFC "Å" ]
+-- , Html.p [] [ Html.text <| String.toUpper <| String.slice 1 3 "abcd" ]
 --
 -- const originalSlice = String.prototype.slice;
 -- String.prototype.slice = function slice(start, end) {
