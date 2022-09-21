@@ -8,7 +8,7 @@
     "elm-format": "elm-format --yes ."
   },
   "dependencies": {
-    "elm-live": "4.0.2",
+    "elm-live": "4.0.0",
     "elm-tooling": "1.8.0",
     "eslint": "8.23.1",
     "prettier": "2.7.1"
