@@ -4,13 +4,13 @@
     "postinstall": "elm-tooling install",
     "start": "elm-live src/Main.elm --start-page=index.html --pushstate -- --output=elm.js",
     "eslint": "eslint . --fix",
-    "prettier": "prettier --write \"**/*.{js,css,html,md}\"",
-    "elm-format": "elm-format --yes src"
+    "prettier": "prettier --write .",
+    "elm-format": "elm-format --yes ."
   },
   "dependencies": {
-    "elm-live": "4.0.0",
+    "elm-live": "4.0.2",
     "elm-tooling": "1.8.0",
-    "eslint": "6.5.1",
-    "prettier": "1.18.2"
+    "eslint": "8.23.1",
+    "prettier": "2.7.1"
   }
 }
